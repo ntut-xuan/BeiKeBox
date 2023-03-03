@@ -19,3 +19,10 @@ A decentralized application let user sell some stuff about NTUT.
  
 ## User scenario
  TBA.
+
+## Pending research
+
+- [ ] How to use solidity.
+- [ ] Unit test in solidity?
+- [ ] Github action in solidity?
+- [ ] Docker in solidity?
