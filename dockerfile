@@ -1,17 +1,12 @@
-FROM ubuntu:22.04
-
-# Install package from apt
-RUN sed 's@archive.ubuntu.com@free.nchc.org.tw@' -i /etc/apt/sources.list
-RUN apt-get -y update && apt-get install -y ssh make build-essential git curl
-
-# Install nodejs, check the environment have node and npm.
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
-RUN apt-get install -y nodejs
-RUN node -v && npm -v 
+FROM node:latest
 
 # Make directory to place the code of BKB.
 RUN mkdir /etc/bkb
 
+RUN npm i -g pnpm
+ENV PNPM_HOME /bin
+
 # Install waffle, mocha, chai with npm
 WORKDIR /etc/bkb
-RUN npm install --save-dev ethereum-waffle mocha chai ts-node typescript @types/mocha
+RUN pnpm install -g truffle
+RUN pnpm install --save-dev mocha chai ts-node typescript @types/mocha
