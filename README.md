@@ -1,28 +1,20 @@
-# BeiKeBox
+# BeiKeBox - Solidity
 A decentralized application let user sell some stuff about NTUT.
 
-## Definition
- 
- - KBK, the drink shop in Taiwan.
- - BKB, the application.
- - NB-Coin (NBC), the coin that can trade in BeiKeBox.
- 
-## Function
+## Progress
 
- - Provide user to post the encrypted info to the BKB, the customer can buy the stuff with NBC.
- - Provide user to get the wallet infomaton.
- - Provide user to sell the public-key to the customer.
-  
-## Pending develope item
- 
- - [ ] Market web application.
- 
-## User scenario
- TBA.
+ - [x] Implement the contract. 
+ - [x] Test the contract.
+ - [x] CI for test the contract.
+ - [ ] Deploy the contract to Goerli.
 
-## Pending research
+## How it works?
 
-- [ ] How to use solidity.
-- [ ] Unit test in solidity?
-- [ ] Github action in solidity?
-- [ ] Docker in solidity?
+ - Local test environment (Ganache)
+    - You should have an Ganache container for blockchain testing environment.
+    - Setup the networks in `truffle-config.js`. The developements network will depend on Ganache so it should set the host of Ganache. (See `truffle-config.js`)
+    - After setting the networks, you can process the operation...
+        - Compile the contract: `truffle compile`
+        - Test the contract: `truffle test --network=developement`
+ - Goerli deployment:
+    - TBD.
