@@ -17,3 +17,5 @@ services:
     container_name: ganache
     logging:
       driver: "none"
+    ports:
+      - 8545:8545
