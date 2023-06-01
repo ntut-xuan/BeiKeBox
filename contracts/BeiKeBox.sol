@@ -27,6 +27,12 @@ contract BeiKeBox is ERC1155 {
 
     event mintEvent(uint id);
 
+    function initializeToken(address producer, uint amount, uint price) public onlyOwner() returns (uint) {
+        uint id = mint(producer, amount);
+        setPrice(id, price);
+        return id;
+    }
+
     function mint(address producer, uint amount) public onlyOwner() returns (uint) {
         uint id = mint_id;
         _mint(producer, id, amount, "");
