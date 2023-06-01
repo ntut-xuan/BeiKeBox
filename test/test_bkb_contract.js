@@ -10,7 +10,7 @@ contract("BeiKeBox", (accounts) => {
             let id = 0
             let amount = 32767
             
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
 
             const balance = (await instance.balanceOf(producer, id)).toString()
             assert.equal(balance, amount.toString(), "Incorrect amount of token")
@@ -23,10 +23,26 @@ contract("BeiKeBox", (accounts) => {
             let amount = 32767
             
             await truffleAssert.fails(
-                instance.mint(producer, id, amount, {from: accounts[1]}),
+                instance.mint(producer, amount, {from: accounts[1]}),
                 truffleAssert.ErrorType.REVERT,
                 "Operation is not premitted."
             )
+        });
+
+        it("Mint token should iterator the ID", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let next_id = 1
+            let amount = 32767
+            
+            await instance.mint(producer, amount)
+            await instance.mint(producer, amount)
+
+            const id_balance = (await instance.balanceOf(producer, id)).toString()
+            const next_id_balance = (await instance.balanceOf(producer, next_id)).toString()
+            assert.equal(id_balance, amount.toString(), "Incorrect amount of token")
+            assert.equal(next_id_balance, amount.toString(), "Incorrect amount of token")
         });
     });
     describe("SetPrice Test", async () => {
@@ -36,7 +52,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const excepted_price = 5
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             
             await instance.setPrice(id, excepted_price)
 
@@ -49,7 +65,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const excepted_price = 5
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             
             await truffleAssert.fails(
                 instance.setPrice(id, excepted_price, {from: accounts[1]}),
@@ -63,7 +79,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const excepted_price = 5
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             
             await truffleAssert.fails(
                 instance.setPrice(3, excepted_price),
@@ -79,7 +95,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const excepted_price = 5
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             
             await truffleAssert.fails(
                 instance.getPrice(3),
@@ -96,7 +112,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const price = 5;
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             await instance.setPrice(id, price);
             
             await instance.purchase(id, {from: customer, value: 10})
@@ -114,7 +130,7 @@ contract("BeiKeBox", (accounts) => {
             const amount = 32767
             const price = 5;
             let producerBalance = web3.utils.toBN(await web3.eth.getBalance(producer))
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             await instance.setPrice(id, price);
             
             await instance.purchase(id, {from: customer, value: 10})
@@ -131,7 +147,7 @@ contract("BeiKeBox", (accounts) => {
             const id = 0
             const amount = 32767
             const price = 5;
-            await instance.mint(producer, id, amount)
+            await instance.mint(producer, amount)
             await instance.setPrice(id, price);
             
             await truffleAssert.fails(
