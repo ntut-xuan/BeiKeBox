@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 contract BeiKeBox is ERC1155 {
 
     address owner;
+    uint mint_id = 0;
 
     constructor() ERC1155("") {
         owner = msg.sender;
@@ -24,10 +25,16 @@ contract BeiKeBox is ERC1155 {
         _;
     }
 
-    function mint(address producer, uint id, uint amount) public onlyOwner() {
+    event mintEvent(uint id);
+
+    function mint(address producer, uint amount) public onlyOwner() returns (uint) {
+        uint id = mint_id;
         _mint(producer, id, amount, "");
         ownerMapping[id] = producer;
         setApprovalForAll(producer, true);
+        mint_id += 1;
+        emit mintEvent(id);
+        return id;
     }
 
     function setPrice(uint id, uint price) public onlyOwner() shouldMinted(id) {
