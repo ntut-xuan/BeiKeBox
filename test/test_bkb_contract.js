@@ -3,6 +3,34 @@ const { assert } = require('chai');
 const truffleAssert = require('truffle-assertions');
 
 contract("BeiKeBox", (accounts) => {
+    describe("Initialize Token Test", async () => {
+        it("Initialize the token should emit the mintEvent", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let amount = 32767
+            let price = 6;
+            
+            const transaction_recipt = await instance.initializeToken(producer, amount, price)
+            
+            const mint_id = Number.parseInt(transaction_recipt.logs[2].args.id).toString()
+            assert.equal(mint_id, id.toString(), "Incorrect ID")
+        });
+        it("Mulpitle initialize the token should emit the mintEvent with iterated ID", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let next_id = id + 1
+            let amount = 32767
+            let price = 6;
+            await instance.initializeToken(producer, amount, price)
+            
+            const transaction_recipt = await instance.initializeToken(producer, amount, price)
+            
+            const mint_id = Number.parseInt(transaction_recipt.logs[2].args.id).toString()
+            assert.equal(mint_id, next_id.toString(), "Incorrect ID")
+        });
+    })
     describe("Mint Test", async () => {
         it("Mint token should have correct balance of token", async () => {
             const instance = await BeiKeBox.new()
