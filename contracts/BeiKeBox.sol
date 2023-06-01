@@ -25,11 +25,12 @@ contract BeiKeBox is ERC1155 {
         _;
     }
 
-    function mint(address producer, uint amount) public onlyOwner() {
+    function mint(address producer, uint amount) public onlyOwner() returns (uint) {
         _mint(producer, mint_id, amount, "");
         ownerMapping[mint_id] = producer;
         setApprovalForAll(producer, true);
         mint_id += 1;
+        return mint_id;
     }
 
     function setPrice(uint id, uint price) public onlyOwner() shouldMinted(id) {
