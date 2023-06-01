@@ -15,20 +15,7 @@ contract("BeiKeBox", (accounts) => {
             const balance = (await instance.balanceOf(producer, id)).toString()
             assert.equal(balance, amount.toString(), "Incorrect amount of token")
         });
-
-        it("Mint token with not owner should revert the operation", async () => {
-            const instance = await BeiKeBox.new()
-            let producer = accounts[1]
-            let id = 0
-            let amount = 32767
-            
-            await truffleAssert.fails(
-                instance.mint(producer, amount, {from: accounts[1]}),
-                truffleAssert.ErrorType.REVERT,
-                "Operation is not premitted."
-            )
-        });
-
+        
         it("Mint token should iterator the ID", async () => {
             const instance = await BeiKeBox.new()
             let producer = accounts[1]
@@ -44,6 +31,45 @@ contract("BeiKeBox", (accounts) => {
             assert.equal(id_balance, amount.toString(), "Incorrect amount of token")
             assert.equal(next_id_balance, amount.toString(), "Incorrect amount of token")
         });
+
+        it("Mint token should return the ID", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let amount = 32767
+            
+            const mint_id = Number.parseInt((await instance.mint(producer, amount)).logs[2].args.id).toString()
+
+            assert.equal(mint_id, id.toString(), "Incorrect ID")
+        });
+
+        it("Mint multiple time should return the iterated ID", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let next_id = 1
+            let amount = 32767
+            
+            const mint_id = Number.parseInt((await instance.mint(producer, amount)).logs[2].args.id).toString()
+            const next_mint_id = Number.parseInt((await instance.mint(producer, amount)).logs[2].args.id).toString()
+
+            assert.equal(mint_id, id.toString(), "Incorrect ID")
+            assert.equal(next_mint_id, next_id.toString(), "Incorrect ID")
+        });
+
+        it("Mint token with not owner should revert the operation", async () => {
+            const instance = await BeiKeBox.new()
+            let producer = accounts[1]
+            let id = 0
+            let amount = 32767
+            
+            await truffleAssert.fails(
+                instance.mint(producer, amount, {from: accounts[1]}),
+                truffleAssert.ErrorType.REVERT,
+                "Operation is not premitted."
+            )
+        });
+
     });
     describe("SetPrice Test", async () => {
         it("Set price to the token should have correct price of token", async () => {
