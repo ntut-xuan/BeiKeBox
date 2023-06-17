@@ -1,20 +1,13 @@
-# BeiKeBox - Solidity
-A decentralized application let user sell some stuff about NTUT.
+# Sample Hardhat Project
 
-## Progress
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
 
- - [x] Implement the contract. 
- - [x] Test the contract.
- - [x] CI for test the contract.
- - [ ] Deploy the contract to Goerli.
+Try running some of the following tasks:
 
-## How it works?
-
- - Local test environment (Ganache)
-    - You should have an Ganache container for blockchain testing environment.
-    - Setup the networks in `truffle-config.js`. The developements network will depend on Ganache so it should set the host of Ganache. (See `truffle-config.js`)
-    - After setting the networks, you can process the operation...
-        - Compile the contract: `truffle compile`
-        - Test the contract: `truffle test --network=developement`
- - Goerli deployment:
-    - TBD.
+```shell
+npx hardhat help
+npx hardhat test
+REPORT_GAS=true npx hardhat test
+npx hardhat node
+npx hardhat run scripts/deploy.ts
+```
